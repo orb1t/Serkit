@@ -1,0 +1,507 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+        xmlns:Gates="clr-namespace:Logic.Circuit.Controls" 
+        xmlns:System="clr-namespace:System;assembly=mscorlib" 
+        mc:Ignorable="d" x:Name="window" x:Class="Serkit.MainWindow"
+        Title="Serqit" SnapsToDevicePixels="True" Background="{x:Null}" Padding="0" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Width="720" Height="500" Margin="0" BorderThickness="1" StateChanged="window_StateChanged" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto" BorderBrush="#FFCFCFCF" AllowsTransparency="True" WindowStyle="None" Icon="Images/logo-256x256.png" PreviewMouseMove="window_PreviewMouseMove" SourceInitialized="window_SourceInitialized" MinWidth="700" MinHeight="320" KeyDown="window_KeyDown" KeyUp="window_KeyUp" SizeChanged="window_SizeChanged" Loaded="window_Loaded">
+
+    <Grid x:Name="grid" Background="White">
+        <StatusBar x:Name="statusBar" Height="24" VerticalAlignment="Bottom" Background="#FF2373FF" Panel.ZIndex="1">
+            <Grid>
+                <Label x:Name="infoLabel" Content="" Height="18" Padding="5,0" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" Foreground="White"/>
+            </Grid>
+        </StatusBar>
+        <Grid Height="28" VerticalAlignment="Top" Background="#FFEAEAEA" x:Name="titlebar" Panel.ZIndex="1" >
+            <Button x:Name="exit" Content="&#xE0A4;" Margin="0" Width="32" Height="28" FontFamily="Segoe UI Symbol" IsCancel="True" Background="#FFEAEAEA" BorderThickness="0" BorderBrush="{x:Null}" MouseDown="exit_MouseDown" FontSize="10" VerticalAlignment="Top" HorizontalAlignment="Right" Click="exit_Click" MouseEnter="exit_MouseEnter" Panel.ZIndex="1" MouseLeave="exit_MouseLeave"/>
+            <Button x:Name="maxres" Content="&#xE155;" HorizontalAlignment="Right" Margin="0,0,32,0" VerticalAlignment="Bottom" Width="32" Height="28" FontFamily="Segoe UI Symbol" IsCancel="True" Background="#FFEAEAEA" BorderThickness="0" BorderBrush="{x:Null}" MouseDown="exit_MouseDown" FontSize="10" Click="maxres_Click" Panel.ZIndex="1"/>
+            <Button x:Name="min" Content="&#xE0B8;" HorizontalAlignment="Right" Margin="0,0,64,0" VerticalAlignment="Bottom" Width="32" Height="28" FontFamily="Segoe UI Symbol" IsCancel="True" Background="#FFEAEAEA" BorderThickness="0" BorderBrush="{x:Null}" MouseDown="exit_MouseDown" FontSize="10" Click="min_Click" Panel.ZIndex="1"/>
+            <Image HorizontalAlignment="Left" Height="24" VerticalAlignment="Top" Width="24" Source="Images/logo-32x32.png" Margin="5,2,0,0" Panel.ZIndex="1"/>
+            <TextBlock x:Name="windowTitle" HorizontalAlignment="Left" Margin="34,3,0,0" TextWrapping="Wrap" Text="Serkit" VerticalAlignment="Top" Width="480" FontSize="16" Panel.ZIndex="-2"/>
+            <Rectangle x:Name="moveRectangle" Fill="Transparent"
+				Grid.Row="0" Grid.Column="0" PreviewMouseDown="moveRectangle_PreviewMouseDown" StrokeThickness="0" Margin="-1,-1,-1,0" Panel.ZIndex="-1" d:IsHidden="True"/>
+        </Grid>
+        <Grid x:Name="desk" Margin="0,28,0,24" Background="#FFEAEAEA" MouseMove="desk_MouseMove">
+            <Grid x:Name="sideControlpanel" HorizontalAlignment="Left" Width="32" Background="#FFF7F7F7" Margin="0,100,0,0">
+                <Button x:Name="circuitView" HorizontalAlignment="Left" Width="32" 
+        			BorderBrush="{x:Null}" Background="{x:Null}" FontFamily="Segoe UI Symbol" 
+        			FontSize="20" BorderThickness="0" Padding="0" ToolTip="Circuit Canvas View" Click="circuitView_Click" VerticalAlignment="Top" Height="32">
+                    <StackPanel>
+                        <TextBlock x:Name="penIcon_Copy7" Text="&#xE123;" TextAlignment="Center" FontSize="12" Height="20" Width="20" Foreground="#FFBFBFBF" Padding="0" Margin="0,1,0,0"/>
+                    </StackPanel>
+                </Button>
+                <Button x:Name="codeView" HorizontalAlignment="Left" Width="32" 
+        			BorderBrush="{x:Null}" Background="{x:Null}" FontFamily="Segoe UI Symbol" 
+        			FontSize="20" BorderThickness="0" Padding="0" Margin="0,32,0,0" ToolTip="Code View" Click="codeView_Click" VerticalAlignment="Top" Height="31">
+                    <StackPanel>
+                        <TextBlock x:Name="penIcon_Copy8" Text="&#xE12F;" TextAlignment="Center" FontSize="12" Height="20" Width="20" Foreground="#FF6689FF" Padding="0" Margin="0,1,0,0"/>
+                    </StackPanel>
+                </Button>
+                <Slider x:Name="zoomAmount" Margin="7,0,7,-37" Orientation="Vertical" Height="185" VerticalAlignment="Bottom" LargeChange="0.1" Maximum="2" SmallChange="0.05" ValueChanged="zoomAmount_ValueChanged" Value="1" Minimum="0.5" RenderTransformOrigin="0.5,0.5" Width="18">
+                    <Slider.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform ScaleX="0.7" ScaleY="0.5"/>
+                            <SkewTransform/>
+                            <RotateTransform/>
+                            <TranslateTransform/>
+                        </TransformGroup>
+                    </Slider.RenderTransform>
+                </Slider>
+                <Button x:Name="resetZoom" Content="&#xE1A3;" Margin="7,0,7,105" VerticalAlignment="Bottom" FontFamily="Segoe UI Symbol" Background="#FFF7F7F7" BorderBrush="{x:Null}" BorderThickness="0" Foreground="#FFCFCFCF" ToolTip="Rest Zoom" Click="resetZoom_Click"/>
+            </Grid>
+            <Grid x:Name="workspace" Margin="32,100,0,0" Panel.ZIndex="1">
+                <ScrollViewer x:Name="editorScroll" d:IsHidden="True">
+                    <TextBox x:Name="codeEditor" TextWrapping="Wrap" Padding="20,5,0,5" BorderBrush="{x:Null}" BorderThickness="0"/>
+                </ScrollViewer>
+                <ScrollViewer x:Name="canvasScroll" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Background="White" BorderThickness="0" PanningRatio="1" PanningMode="Both">
+                    <Canvas x:Name="canvas" MouseLeftButtonUp="canvas_MouseLeftButtonUp" MouseWheel="canvas_MouseWheel" KeyDown="canvas_KeyDown" KeyUp="canvas_KeyUp" MouseDown="canvas_MouseDown" GotMouseCapture="canvas_GotMouseCapture" MouseRightButtonDown="canvas_MouseRightButtonDown" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto" Width="4800" Height="3200" PreviewMouseMove="canvas_PreviewMouseMove" GotFocus="canvas_GotFocus" Focusable="True">
+                        <Canvas.Background>
+                            <ImageBrush ImageSource="Images/Grid.png" Stretch="Uniform"/>
+                        </Canvas.Background>
+                        <Canvas.RenderTransform>
+                            <ScaleTransform x:Name="canvasScaleTransform"/>
+                        </Canvas.RenderTransform>
+                    </Canvas>
+                </ScrollViewer>
+            </Grid>
+            <Grid x:Name="FileChooserGrid" Margin="0,100,0,0" Background="White" Panel.ZIndex="2" Visibility="Collapsed">
+                <Button x:Name="backSave" Content="&#xE0C4;" HorizontalAlignment="Left" Width="32" FontSize="20" FontFamily="Segoe UI Symbol" Foreground="#FFB8B8B8" Background="#FFF7F7F7" BorderBrush="{x:Null}" BorderThickness="0" Click="backSave_Click"/>
+                <Grid Margin="32,0,0,0">
+                    <Grid Height="48" Margin="0" Background="#FFFAFAFA" VerticalAlignment="Top">
+                        <Button x:Name="okCommand" HorizontalAlignment="Right" Width="60" 
+                    		BorderBrush="{x:Null}" Background="{x:Null}" FontFamily="Segoe UI Symbol" 
+                    		FontSize="20" BorderThickness="0" Padding="0" ToolTip="Save" Click="saveSerkitFIle_Click" Height="48">
+                            <StackPanel>
+                                <TextBlock x:Name="penIcon_Copy10" Text="&#xE105;" TextAlignment="Center" FontSize="24" Height="36" Width="38" Foreground="#FF1C89E4" Padding="0"/>
+                            </StackPanel>
+                        </Button>
+                        <Button x:Name="cancelSave" 
+                    		BorderBrush="{x:Null}" Background="{x:Null}" FontFamily="Segoe UI Symbol" 
+                    		FontSize="20" BorderThickness="0" Padding="0" ToolTip="Cancel" Click="cancelSave_Click" Margin="0,0,61,0" HorizontalAlignment="Right" Width="60" Height="48">
+                            <StackPanel>
+                                <TextBlock x:Name="penIcon_Copy9" Text="&#xE10A;" TextAlignment="Center" FontSize="24" Height="36" Width="38" Foreground="#FFFF9797" Padding="0"/>
+                            </StackPanel>
+                        </Button>
+                        <TextBox x:Name="fileName" TextWrapping="Wrap" Text="temp.sdf" Margin="118,0,121,0" BorderBrush="{x:Null}" Background="{x:Null}" FontSize="16" Padding="16,14,0,0" BorderThickness="0" Height="48"/>
+                        <TextBlock x:Name="fileChooserType" TextWrapping="Wrap" Text="Save As" VerticalAlignment="Top" Height="48" FontSize="22" Foreground="#FF8F8F8F" Padding="16,8,0,0" HorizontalAlignment="Left" Width="120"/>
+                    </Grid>
+                    <TextBlock x:Name="folderPath" TextWrapping="Wrap" Text="&#xE1C1; Drives" Background="#FFFAFAFA" Height="24" Padding="10,4,0,0" Foreground="#FF999999" FontFamily="Segoe UI Symbol" VerticalAlignment="Top" Margin="0,48,0,0" FontSize="13"/>
+                    <ScrollViewer Margin="0,72,0,0" VerticalScrollBarVisibility="Auto">
+                        <StackPanel x:Name="folderList" Background="#33FFFFFF" Initialized="folderList_Initialized"/>
+                    </ScrollViewer>
+                </Grid>
+            </Grid>
+            <Grid x:Name="menuStrip" Height="100" VerticalAlignment="Top">
+                <Grid x:Name="menuGrid" Margin="0,20,0,0" Background="#FFF7F7F7">
+                    <Grid x:Name="circuitGrid" Margin="0" Background="#FFF7F7F7">
+                        <Button x:Name="pointerHandMode" HorizontalAlignment="Left" 
+							Margin="4,4,0,0" VerticalAlignment="Top" Width="46" 
+							Height="46" BorderBrush="{x:Null}" Background="{x:Null}" 
+							FontFamily="Segoe UI Symbol" BorderThickness="0" 
+							Padding="0" Click="pointerHandMode_Click" 
+							HorizontalContentAlignment="Center" VerticalContentAlignment="Center" MouseDoubleClick="pointerHandMode_MouseDoubleClick">
+                            <StackPanel>
+                                <TextBlock Text="&#xE1E3;" TextAlignment="Center" Width="25" Height="25" FontSize="16" Padding="0,2,0,0" Foreground="#FF4689FF"/>
+                                <TextBlock Text="Pointer" TextAlignment="Center" FontSize="10"/>
+                            </StackPanel>
+                        </Button>
+                        <Button x:Name="penMode" HorizontalAlignment="Left" 
+							Margin="49,4,0,0" VerticalAlignment="Top" Width="46" Height="46" 
+							BorderBrush="{x:Null}" Background="{x:Null}" FontFamily="Segoe UI Symbol" 
+							FontSize="20" BorderThickness="0" Padding="0" Click="penMode_Click">
+                            <StackPanel>
+                                <TextBlock x:Name="penIcon" Text="&#xE104;" TextAlignment="Center" FontSize="20" Height="25" Width="25" Foreground="#FF979797"/>
+                                <TextBlock x:Name="penLabel" Text="Wire" TextAlignment="Center" FontSize="10"/>
+                            </StackPanel>
+                        </Button>
+                        <Grid x:Name="memoryPanel"  Margin="146,20,0,0" Background="#FFFAFFC3" d:IsHidden="True">
+                            <Button x:Name="mem16x8" HorizontalAlignment="Left" Width="51" 
+								BorderBrush="{x:Null}" Background="{x:Null}" FontFamily="Segoe UI Symbol" 
+								FontSize="20" BorderThickness="0" Padding="0" Cursor="Hand" Click="mem16x8_Click">
+                                <StackPanel>
+                                    <Image Height="30" Width="33" Source="Images/GateIcons/16 x 8.png" />
+                                    <TextBlock Text="16 x 8" TextAlignment="Center" FontSize="10" Padding="0,0,2,0"/>
+                                </StackPanel>
+                            </Button>
+                            <Button x:Name="mem16x16" HorizontalAlignment="Left" Width="51" 
+								BorderBrush="{x:Null}" Background="{x:Null}" FontFamily="Segoe UI Symbol" 
+								FontSize="20" BorderThickness="0" Padding="0" Click="andGate_Click" Cursor="Hand" Margin="51,0,0,0">
+                                <StackPanel>
+                                    <Image Height="30" Width="33" Source="Images/GateIcons/16 x 16.png" />
+                                    <TextBlock Text="16 x 16" TextAlignment="Center" FontSize="10" Padding="0,0,2,0"/>
+                                </StackPanel>
+                            </Button>
+                            <Button x:Name="mem256x8" HorizontalAlignment="Left" Width="51" 
+								BorderBrush="{x:Null}" Background="{x:Null}" FontFamily="Segoe UI Symbol" 
+								FontSize="20" BorderThickness="0" Padding="0" Click="andGate_Click" Cursor="Hand" Margin="102,0,0,0">
+                                <StackPanel>
+                                    <Image Height="30" Width="33" Source="Images/GateIcons/256 x 8.png" />
+                                    <TextBlock Text="256 x 8" TextAlignment="Center" FontSize="10" Padding="0,0,2,0"/>
+                                </StackPanel>
+                            </Button>
+                            <Button x:Name="mem256x16" HorizontalAlignment="Left" Width="51" 
+								BorderBrush="{x:Null}" Background="{x:Null}" FontFamily="Segoe UI Symbol" 
+								FontSize="20" BorderThickness="0" Padding="0" Click="andGate_Click" Cursor="Hand" Margin="153,0,0,0">
+                                <StackPanel>
+                                    <Image Height="30" Width="33" Source="Images/GateIcons/256 x 16.png" />
+                                    <TextBlock Text="256 x 16" TextAlignment="Center" FontSize="10" Padding="0,0,2,0"/>
+                                </StackPanel>
+                            </Button>
+                            <Button x:Name="mem64kx1" HorizontalAlignment="Left" Width="51" 
+								BorderBrush="{x:Null}" Background="{x:Null}" FontFamily="Segoe UI Symbol" 
+								FontSize="20" BorderThickness="0" Padding="0" Click="andGate_Click" Cursor="Hand" Margin="204,0,0,0">
+                                <StackPanel>
+                                    <Image Height="30" Width="33" Source="Images/GateIcons/64K x 1.png" />
+                                    <TextBlock Text="64K x 1" TextAlignment="Center" FontSize="10" Padding="0,0,2,0"/>
+                                </StackPanel>
+                            </Button>
+                            <Button x:Name="mem64kx4" HorizontalAlignment="Left" Width="51" 
+								BorderBrush="{x:Null}" Background="{x:Null}" FontFamily="Segoe UI Symbol" 
+								FontSize="20" BorderThickness="0" Padding="0" Click="andGate_Click" Cursor="Hand" Margin="255,0,0,0">
+                                <StackPanel>
+                                    <Image Height="30" Width="33" Source="Images/GateIcons/64K x 4.png" />
+                                    <TextBlock Text="64K x 4" TextAlignment="Center" FontSize="10" Padding="0,0,2,0"/>
+                                </StackPanel>
+                            </Button>
+                            <Button x:Name="mem64kx8" HorizontalAlignment="Left" Width="51" 
+								BorderBrush="{x:Null}" Background="{x:Null}" FontFamily="Segoe UI Symbol" 
+								FontSize="20" BorderThickness="0" Padding="0" Click="andGate_Click" Cursor="Hand" Margin="306,0,0,0">
+                                <StackPanel>
+                                    <Image Height="30" Width="33" Source="Images/GateIcons/64K x 8.png" />
+                                    <TextBlock Text="64K x 8" TextAlignment="Center" FontSize="10" Padding="0,0,2,0"/>
+                                </StackPanel>
+                            </Button>
+                            <Button x:Name="mem64kx16" HorizontalAlignment="Left" Width="51" 
+								BorderBrush="{x:Null}" Background="{x:Null}" FontFamily="Segoe UI Symbol" 
+								FontSize="20" BorderThickness="0" Padding="0" Click="andGate_Click" Cursor="Hand" Margin="357,0,0,0">
+                                <StackPanel>
+                                    <Image Height="30" Width="33" Source="Images/GateIcons/64K x 16.png" />
+                                    <TextBlock Text="64K x 16" TextAlignment="Center" FontSize="10" Padding="0,0,2,0"/>
+                                </StackPanel>
+                            </Button>
+                            <Button x:Name="mem64kx32" HorizontalAlignment="Left" Width="51" 
+								BorderBrush="{x:Null}" Background="{x:Null}" FontFamily="Segoe UI Symbol" 
+								FontSize="20" BorderThickness="0" Padding="0" Click="andGate_Click" Cursor="Hand" Margin="408,0,0,0">
+                                <StackPanel>
+                                    <Image Height="30" Width="33" Source="Images/GateIcons/64K x 32.png" />
+                                    <TextBlock Text="64K x 32" TextAlignment="Center" FontSize="10" Padding="0,0,2,0"/>
+                                </StackPanel>
+                            </Button>
+                            <Button x:Name="mem4Gx32" HorizontalAlignment="Left" Width="51" 
+								BorderBrush="{x:Null}" Background="{x:Null}" FontFamily="Segoe UI Symbol" 
+								FontSize="20" BorderThickness="0" Padding="0" Click="andGate_Click" Cursor="Hand" Margin="459,0,0,0">
+                                <StackPanel>
+                                    <Image Height="30" Width="33" Source="Images/GateIcons/4G x 32.png" />
+                                    <TextBlock Text="4G x 32" TextAlignment="Center" FontSize="10" Padding="0,0,2,0"/>
+                                </StackPanel>
+                            </Button>
+                            <Button x:Name="mem4Gx8B" HorizontalAlignment="Left" Width="51" 
+								BorderBrush="{x:Null}" Background="{x:Null}" FontFamily="Segoe UI Symbol" 
+								FontSize="20" BorderThickness="0" Padding="0" Click="andGate_Click" Cursor="Hand" Margin="510,0,-9,0">
+                                <StackPanel>
+                                    <Image Height="30" Width="33" Source="Images/GateIcons/4G x 8B.png" />
+                                    <TextBlock Text="4G x 8B" TextAlignment="Center" FontSize="10" Padding="0,0,2,0"/>
+                                </StackPanel>
+                            </Button>
+                        </Grid>
+                        <Grid x:Name="flipFlopPanel"  Margin="146,20,0,0" Background="#FFFFD8D8" d:IsHidden="True">
+                            <Button x:Name="rsFlipFlop" HorizontalAlignment="Left" Width="51" 
+								BorderBrush="{x:Null}" Background="{x:Null}" FontFamily="Segoe UI Symbol" 
+								FontSize="20" BorderThickness="0" Padding="0" Cursor="Hand" Click="rsFlipFlop_Click">
+                                <StackPanel>
+                                    <Image Height="30" Width="33" Source="Images/GateIcons/rsFF.png" />
+                                    <TextBlock Text="R S" TextAlignment="Center" FontSize="10"/>
+                                </StackPanel>
+                            </Button>
+                            <Button x:Name="jkFlipFlop" HorizontalAlignment="Left" Width="51" 
+								BorderBrush="{x:Null}" Background="{x:Null}" FontFamily="Segoe UI Symbol" 
+								FontSize="20" BorderThickness="0" Padding="0" Cursor="Hand" Margin="51,0,0,0" Click="jkFlipFlop_Click">
+                                <StackPanel>
+                                    <Image Height="30" Width="33" Source="Images/GateIcons/jkFF.png" />
+                                    <TextBlock Text="J K" TextAlignment="Center" FontSize="10"/>
+                                </StackPanel>
+                            </Button>
+                            <Button x:Name="dFlipFlop" HorizontalAlignment="Left" Width="51" 
+								BorderBrush="{x:Null}" Background="{x:Null}" FontFamily="Segoe UI Symbol" 
+								FontSize="20" BorderThickness="0" Padding="0" Cursor="Hand" Margin="102,0,0,0" Click="dFlipFlop_Click">
+                                <StackPanel>
+                                    <Image Height="30" Width="33" Source="Images/GateIcons/dFF.png" />
+                                    <TextBlock Text="D" TextAlignment="Center" FontSize="10"/>
+                                </StackPanel>
+                            </Button>
+                            <Button x:Name="tFlipFlop" HorizontalAlignment="Left" Width="51" 
+								BorderBrush="{x:Null}" Background="{x:Null}" FontFamily="Segoe UI Symbol" 
+								FontSize="20" BorderThickness="0" Padding="0" Cursor="Hand" Margin="153,0,0,0" Click="tFlipFlop_Click">
+                                <StackPanel>
+                                    <Image Height="30" Width="33" Source="Images/GateIcons/tFF.png" />
+                                    <TextBlock Text="T" TextAlignment="Center" FontSize="10"/>
+                                </StackPanel>
+                            </Button>
+                        </Grid>
+                        <Grid x:Name="logicPanel"  Margin="146,20,0,0" Background="#FFC1FFCF">
+                            <Button x:Name="pin" HorizontalAlignment="Left" Width="40" 
+								BorderBrush="{x:Null}" Background="{x:Null}" FontFamily="Segoe UI Symbol" 
+								FontSize="20" BorderThickness="0" Padding="0" Cursor="Hand" Click="pin_Click">
+                                <StackPanel>
+                                    <TextBlock x:Name="penIcon_Copy" Text="&#xE21A;" TextAlignment="Center" FontSize="16" Height="25" Width="25" Foreground="#FF5AA5FF"/>
+                                    <TextBlock Text="PIN" TextAlignment="Center" FontSize="10"/>
+                                </StackPanel>
+                            </Button>
+                            <Button x:Name="clockInsert" HorizontalAlignment="Left" Width="40" 
+								BorderBrush="{x:Null}" Background="{x:Null}" FontFamily="Segoe UI Symbol" 
+								FontSize="20" BorderThickness="0" Padding="0" Cursor="Hand" Margin="40,0,0,0" Click="clock_Click">
+                                <StackPanel>
+                                    <TextBlock x:Name="penIcon_Copy1" Text="&#xE0C2;" TextAlignment="Center" FontSize="16" Height="25" Width="25" Foreground="#FF38B94A"/>
+                                    <TextBlock Text="CLOCK" TextAlignment="Center" FontSize="10"/>
+                                </StackPanel>
+                            </Button>
+                            <Button x:Name="andGate1" HorizontalAlignment="Left" Width="40" 
+								BorderBrush="{x:Null}" Background="{x:Null}" FontFamily="Segoe UI Symbol" 
+								FontSize="20" BorderThickness="0" Padding="0" Click="andGate_Click" Cursor="Hand" Margin="80,0,0,0">
+                                <StackPanel>
+                                    <Image Height="30" Width="33" Source="Images/GateIcons/andGate25_v.png" />
+                                    <TextBlock Text="AND" TextAlignment="Center" FontSize="10"/>
+                                </StackPanel>
+                            </Button>
+                            <Button x:Name="orGate1" HorizontalAlignment="Left" Width="40" 
+								BorderBrush="{x:Null}" Background="{x:Null}" FontFamily="Segoe UI Symbol" 
+								FontSize="20" BorderThickness="0" Padding="0" Click="orGate_Click" Margin="120,0,0,0" Cursor="Hand">
+                                <StackPanel>
+                                    <Image Height="30" Width="33" Source="Images/GateIcons/orGate25_v.png" />
+                                    <TextBlock Text="OR" TextAlignment="Center" FontSize="10"/>
+                                </StackPanel>
+                            </Button>
+                            <Button x:Name="notGate1" HorizontalAlignment="Left" Width="40" 
+								BorderBrush="{x:Null}" Background="{x:Null}" FontFamily="Segoe UI Symbol" 
+								FontSize="20" BorderThickness="0" Padding="0" Margin="160,0,0,0" Click="notGate_Click" Cursor="Hand">
+                                <StackPanel>
+                                    <Image Height="30" Width="33" Source="Images/GateIcons/notGate25_v.png" />
+                                    <TextBlock Text="NOT" TextAlignment="Center" FontSize="10"/>
+                                </StackPanel>
+                            </Button>
+                            <Button x:Name="nandGate1" HorizontalAlignment="Left" Width="40" 
+								BorderBrush="{x:Null}" Background="{x:Null}" FontFamily="Segoe UI Symbol" 
+								FontSize="20" BorderThickness="0" Padding="0" Click="nandGate_Click" Margin="200,0,0,0" Cursor="Hand">
+                                <StackPanel>
+                                    <Image Height="30" Width="33" Source="Images/GateIcons/nandGate25_v.png" />
+                                    <TextBlock Text="NAND" TextAlignment="Center" FontSize="10"/>
+                                </StackPanel>
+                            </Button>
+                            <Button x:Name="norGate1" HorizontalAlignment="Left" Width="40" 
+								BorderBrush="{x:Null}" Background="{x:Null}" FontFamily="Segoe UI Symbol" 
+								FontSize="20" BorderThickness="0" Padding="0" Click="norGate_Click" Margin="240,0,0,0" Cursor="Hand">
+                                <StackPanel>
+                                    <Image Height="30" Width="33" Source="Images/GateIcons/norGate25_v.png" />
+                                    <TextBlock Text="NOR" TextAlignment="Center" FontSize="10"/>
+                                </StackPanel>
+                            </Button>
+                            <Button x:Name="xorGate1" HorizontalAlignment="Left" Width="40" 
+								BorderBrush="{x:Null}" Background="{x:Null}" FontFamily="Segoe UI Symbol" 
+								FontSize="20" BorderThickness="0" Padding="0" Click="xorGate_Click" Margin="280,0,0,0" Cursor="Hand">
+                                <StackPanel>
+                                    <Image Height="30" Width="33" Source="Images/GateIcons/xorGate25_v.png" />
+                                    <TextBlock Text="XOR" TextAlignment="Center" FontSize="10"/>
+                                </StackPanel>
+                            </Button>
+                            <Button x:Name="xnorGate1" HorizontalAlignment="Left" Width="40" 
+								BorderBrush="{x:Null}" Background="{x:Null}" FontFamily="Segoe UI Symbol" 
+								FontSize="20" BorderThickness="0" Padding="0" Click="xnorGate_Click" Margin="320,0,0,0" Cursor="Hand">
+                                <StackPanel>
+                                    <Image Height="30" Width="33" Source="Images/GateIcons/xnorGate25_v.png" />
+                                    <TextBlock Text="XNOR" TextAlignment="Center" FontSize="10"/>
+                                </StackPanel>
+                            </Button>
+                            <Button x:Name="led" HorizontalAlignment="Left" Width="40" 
+								BorderBrush="{x:Null}" Background="{x:Null}" FontFamily="Segoe UI Symbol" 
+								FontSize="20" BorderThickness="0" Padding="0" Cursor="Hand" Margin="360,0,0,0" Click="led_Click">
+                                <StackPanel>
+                                    <TextBlock x:Name="penIcon_Copy2" Text="&#xE21A;" TextAlignment="Center" FontSize="20" Height="28" Width="25" Foreground="#FFDE5757" Padding="0"/>
+                                    <TextBlock Text="LED" TextAlignment="Center" FontSize="10"/>
+                                </StackPanel>
+                            </Button>
+                            <Button x:Name="text" HorizontalAlignment="Left" Width="40" 
+								BorderBrush="{x:Null}" Background="{x:Null}" FontFamily="Segoe UI Symbol" 
+								FontSize="20" BorderThickness="0" Padding="0" Cursor="Hand" Margin="400,0,0,0" Click="text_Click">
+                                <StackPanel>
+                                    <TextBlock x:Name="penIcon_Copy6" Text="&#xE185;" TextAlignment="Center" FontSize="20" Height="28" Width="25" Foreground="Black" Padding="0"/>
+                                    <TextBlock Text="TEXT" TextAlignment="Center" FontSize="10"/>
+                                </StackPanel>
+                            </Button>
+                            <Button x:Name="sequence" HorizontalAlignment="Left" Width="40" 
+                            	BorderBrush="{x:Null}" Background="{x:Null}" FontFamily="Segoe UI Symbol" 
+                            	FontSize="20" BorderThickness="0" Padding="0" Cursor="Hand" Margin="440,0,0,0" Click="sequence_Click">
+                                <StackPanel>
+                                    <TextBlock x:Name="penIcon_Copy11" Text="&#xE201;" TextAlignment="Center" FontSize="20" Height="28" Width="25" Foreground="#FFB8B8B8" Padding="0"/>
+                                    <TextBlock Text="SEQ" TextAlignment="Center" FontSize="10"/>
+                                </StackPanel>
+                            </Button>
+                        </Grid>
+                        <Button x:Name="flipFlopPanelButton" Content="Flip Flops" Margin="206,0,0,0" Padding="0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="60" FontSize="11" Height="20" Background="#FFEAEAEA" BorderBrush="{x:Null}" BorderThickness="0" Click="flipFlopPanelButton_Click"/>
+                        <Button x:Name="logicPanelButton" Content="Logic" Margin="146,0,0,0" Padding="0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="60" FontSize="11" Height="20" Background="#FFC1FFCF" BorderBrush="{x:Null}" BorderThickness="0" Click="logicPanelButton_Click"/>
+                        <Button x:Name="memoryPanelButton" Content="RAM" Margin="266,0,0,0" Padding="0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="60" FontSize="11" Height="20" Background="#FFEAEAEA" BorderBrush="{x:Null}" BorderThickness="0" Click="memoryPanelButton_Click"/>
+                        <Button x:Name="eraseMode" HorizontalAlignment="Left" 
+							Margin="95,4,0,0" VerticalAlignment="Top" Width="46" Height="46" 
+							BorderBrush="{x:Null}" Background="{x:Null}" FontFamily="Segoe UI Symbol" 
+							FontSize="20" BorderThickness="0" Padding="0" Click="eraseMode_Click">
+                            <StackPanel>
+                                <TextBlock Text="&#xE106;" TextAlignment="Center" FontSize="20" Height="25" Width="25" Foreground="#FF979797" Padding="0" Margin="0"/>
+                                <TextBlock Text="Erase" TextAlignment="Center" FontSize="10"/>
+                            </StackPanel>
+                        </Button>
+                        <Button x:Name="stopCircuit" Content="&#xE20D;" Margin="94,50,0,0" Width="47" Height="30" FontFamily="Segoe UI Symbol" IsCancel="True" Background="#FFF7F7F7" BorderThickness="0" BorderBrush="{x:Null}" FontSize="16" VerticalAlignment="Top" HorizontalAlignment="Left" Panel.ZIndex="1" Padding="1,0,1,1" Foreground="#FFE85151" Click="stopCircuit_Click"/>
+                        <Button x:Name="pauseCircuit" Content="&#xE214;" Margin="50,50,0,0" Width="45" Height="30" FontFamily="Segoe UI Symbol" IsCancel="True" Background="#FFF7F7F7" BorderThickness="0" BorderBrush="{x:Null}" FontSize="20" VerticalAlignment="Top" HorizontalAlignment="Left" Click="exit_Click" Panel.ZIndex="1" Padding="1,0,1,1" Foreground="#FF7688FF"/>
+                        <Button x:Name="runCircuit" Content="&#xE213;" Margin="5,50,0,0" Width="45" Height="30" FontFamily="Segoe UI Symbol" IsCancel="True" Background="#FFF7F7F7" BorderThickness="0" BorderBrush="{x:Null}" FontSize="24" VerticalAlignment="Top" HorizontalAlignment="Left" Panel.ZIndex="1" Padding="1,-3,1,1" Foreground="#FF1FC53D" Click="runCircuit_Click"/>
+                    </Grid>
+                    <Grid x:Name="editGrid" Background="#FFF7F7F7">
+                        <Grid x:Name="seqEdit" d:IsHidden="True">
+                            <TextBlock HorizontalAlignment="Left" Margin="25,18,0,0" TextWrapping="Wrap" Text="CLOCK (Hertz)" VerticalAlignment="Top" FontWeight="Bold"/>
+                            <ComboBox x:Name="clockSpeed" HorizontalAlignment="Left" Margin="25,39,0,0" VerticalAlignment="Top" Width="120" BorderBrush="{x:Null}" Background="{x:Null}" BorderThickness="0" IsEditable="True" SelectedIndex="1">
+                                <System:Int32>1</System:Int32>
+                                <System:Int32>2</System:Int32>
+                                <System:Int32>5</System:Int32>
+                                <System:Int32>10</System:Int32>
+                                <System:Int32>20</System:Int32>
+                                <System:Int32>50</System:Int32>
+                                <System:Int32>100</System:Int32>
+                                <System:Int32>200</System:Int32>
+                                <System:Int32>500</System:Int32>
+                                <System:Int32>1000</System:Int32>
+                            </ComboBox>
+                            <TextBlock x:Name="sequenceLabel" HorizontalAlignment="Left" Margin="165,18,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontWeight="Bold" Text="SEQUENCE"/>
+                            <TextBox HorizontalAlignment="Left" Height="20" Margin="165,39,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="120" BorderThickness="0" BorderBrush="{x:Null}" Background="White" Padding="1,1,0,0"/>
+                        </Grid>
+                        <Grid x:Name="textBoxEdit" Background="#FFF7F7F7">
+                            <TextBlock HorizontalAlignment="Left" Margin="39,31,0,0" TextWrapping="Wrap" Text="Select Font Family" VerticalAlignment="Top"/>
+                            <ComboBox x:Name="fontChoose" HorizontalAlignment="Left" Margin="39,50,0,0" VerticalAlignment="Top" Width="120" Background="#FFF9F9F9" BorderBrush="{x:Null}" IsEditable="True" BorderThickness="0" ItemsSource="{Binding Source={x:Static Fonts.SystemFontFamilies}}" SelectedIndex="40" SelectionChanged="fontChoose_SelectionChanged" />
+                            <TextBlock HorizontalAlignment="Left" Margin="22,10,0,0" TextWrapping="Wrap" Text="EDIT TEXT BOX" VerticalAlignment="Top" FontFamily="Segoe UI Semibold"/>
+                            <TextBlock HorizontalAlignment="Left" Margin="173,31,0,0" TextWrapping="Wrap" Text="Select Font Size" VerticalAlignment="Top"/>
+                            <ComboBox x:Name="fontSizeChoose" HorizontalAlignment="Left" Margin="173,50,0,0" VerticalAlignment="Top" Width="83" Background="#FFF9F9F9" BorderBrush="{x:Null}" IsEditable="True" BorderThickness="0" SelectedIndex="5" SelectionChanged="fontSizeChoose_SelectionChanged">
+                                <System:Int32>6</System:Int32>
+                                <System:Int32>7</System:Int32>
+                                <System:Int32>8</System:Int32>
+                                <System:Int32>10</System:Int32>
+                                <System:Int32>11</System:Int32>
+                                <System:Int32>12</System:Int32>
+                                <System:Int32>14</System:Int32>
+                                <System:Int32>16</System:Int32>
+                                <System:Int32>18</System:Int32>
+                                <System:Int32>20</System:Int32>
+                                <System:Int32>24</System:Int32>
+                                <System:Int32>36</System:Int32>
+                                <System:Int32>48</System:Int32>
+                                <System:Int32>60</System:Int32>
+                                <System:Int32>72</System:Int32>
+                                <System:Int32>96</System:Int32>
+                                <System:Int32>108</System:Int32>
+                            </ComboBox>
+                            <CheckBox x:Name="fontBold" Content="&#xE19B;" HorizontalAlignment="Left" Margin="270,53,0,0" VerticalAlignment="Top" BorderThickness="0" FontFamily="Segoe UI Symbol" ToolTip="BOLD" Checked="fontBold_Checked" Unchecked="fontBold_Unchecked"/>
+                            <CheckBox x:Name="fontItalic" Content="&#xE199;" HorizontalAlignment="Left" Margin="325,53,0,0" VerticalAlignment="Top" BorderThickness="0" FontFamily="Segoe UI Symbol" ToolTip="Italic" Checked="fontItalic_Checked" Unchecked="fontItalic_Unchecked"/>
+                            <TextBlock HorizontalAlignment="Left" Margin="270,31,0,0" TextWrapping="Wrap" Text="Font Face Style" VerticalAlignment="Top"/>
+                            <Slider x:Name="heightSlider" HorizontalAlignment="Left" Margin="378,53,0,0" VerticalAlignment="Top" Width="120" Maximum="112" Minimum="10" LargeChange="2" SmallChange="1" Height="22" Delay="100" RenderTransformOrigin="0.5,0.5" ValueChanged="heightSlider_ValueChanged" Value="26"/>
+                            <TextBlock x:Name="heightLabel" HorizontalAlignment="Left" Margin="378,31,0,0" TextWrapping="Wrap" Text="Height" VerticalAlignment="Top"/>
+                            <Slider x:Name="widthSlider" HorizontalAlignment="Left" Margin="507,53,0,0" VerticalAlignment="Top" Width="120" Maximum="512" Minimum="10" LargeChange="2" SmallChange="1" Height="22" Delay="100" RenderTransformOrigin="0.5,0.5" ValueChanged="widthSlider_ValueChanged" Value="120"/>
+                            <TextBlock x:Name="widthLabel" HorizontalAlignment="Left" Margin="507,31,0,0" TextWrapping="Wrap" Text="Width" VerticalAlignment="Top"/>
+                            <CheckBox x:Name="borderCheck" Content="&#xE14E;" HorizontalAlignment="Left" Margin="638,53,0,0" VerticalAlignment="Top" BorderThickness="0" FontFamily="Segoe UI Symbol" ToolTip="BOLD" IsChecked="True" Checked="borderCheck_Checked" Unchecked="borderCheck_Unchecked"/>
+                            <TextBlock HorizontalAlignment="Left" Margin="638,31,0,0" TextWrapping="Wrap" Text="Border" VerticalAlignment="Top"/>
+                        </Grid>
+                    </Grid>
+                    <Grid x:Name="fileGrid" Background="#FFF7F7F7" d:IsHidden="True">
+                        <Button x:Name="newButton" HorizontalAlignment="Left" Width="61" 
+							BorderBrush="{x:Null}" Background="{x:Null}" FontFamily="Segoe UI Symbol" 
+							FontSize="20" BorderThickness="0" Padding="0" ToolTip="New Circuit" Click="newButton_Click">
+                            <StackPanel>
+                                <TextBlock x:Name="penIcon_Copy4" Text="&#xE132;" TextAlignment="Center" FontSize="30" Height="36" Width="38" Foreground="White" Padding="0"/>
+                            </StackPanel>
+                        </Button>
+                        <Button x:Name="saveButton" HorizontalAlignment="Left" Width="61" 
+							BorderBrush="{x:Null}" Background="{x:Null}" FontFamily="Segoe UI Symbol" 
+							FontSize="20" BorderThickness="0" Padding="0" Margin="61,0,0,0" ToolTip="Save Circuit" Click="saveButton_Click">
+                            <StackPanel>
+                                <TextBlock x:Name="penIcon_Copy3" Text="&#xE105;" TextAlignment="Center" FontSize="30" Height="36" Width="38" Foreground="#FF1C89E4" Padding="0"/>
+                            </StackPanel>
+                        </Button>
+                        <Button x:Name="openButton" HorizontalAlignment="Left" Width="61" 
+							BorderBrush="{x:Null}" Background="{x:Null}" FontFamily="Segoe UI Symbol" 
+							FontSize="20" BorderThickness="0" Padding="0" Margin="122,0,0,0" ToolTip="Open Circuit" Click="openButton_Click">
+                            <StackPanel>
+                                <TextBlock x:Name="penIcon_Copy5" Text="&#xE1C1;" TextAlignment="Center" FontSize="30" Height="36" Width="38" Foreground="#FFFFF6BF" Padding="0"/>
+                            </StackPanel>
+                        </Button>
+                    </Grid>
+                </Grid>
+                <Menu Height="20" VerticalAlignment="Top" Background="{x:Null}">
+                    <MenuItem x:Name="fileMenu" Header="FILE" Background="WhiteSmoke" BorderThickness="0" Padding="6,0" Margin="5,0,0,0" Height="20" Click="fileMenu_Click"/>
+                    <MenuItem x:Name="editMenu" Header="EDIT" Background="{x:Null}" BorderThickness="0" Height="20" Margin="0"/>
+                    <MenuItem x:Name="toolsMenu" Header="TOOLS" Background="{x:Null}" BorderThickness="0" Height="20" Margin="0"/>
+                    <MenuItem x:Name="viewMenu" Header="VIEW" Background="{x:Null}" BorderThickness="0" Height="20" Margin="0"/>
+                    <MenuItem x:Name="circuitMenu" Header="CIRCUIT" Background="{x:Null}" BorderThickness="0" Height="20" Margin="0" Width="55" Click="circuitMenu_Click"/>
+                </Menu>
+            </Grid>
+
+        </Grid>
+        <Grid x:Name="resizeGrid" Panel.ZIndex="1">
+            <Rectangle
+				Stroke="{x:Null}"
+				Fill="Transparent"
+				VerticalAlignment="Top"
+				Height="2"
+				x:Name="top"
+				Margin="2,0" MouseMove="ResizeRectangle_MouseMove" PreviewMouseDown="ResizeRectangle_PreviewMouseDown" />
+            <Rectangle
+				Stroke="{x:Null}"
+				Fill="Transparent"
+				x:Name="bottom"
+				Height="2"
+				VerticalAlignment="Bottom"
+				Margin="2,0" MouseMove="ResizeRectangle_MouseMove" PreviewMouseDown="ResizeRectangle_PreviewMouseDown" />
+            <Rectangle
+				Stroke="{x:Null}"
+				Fill="Transparent"
+				HorizontalAlignment="Left"
+				Margin="0,2"
+				Width="2"
+				x:Name="left" MouseMove="ResizeRectangle_MouseMove" PreviewMouseDown="ResizeRectangle_PreviewMouseDown"/>
+            <Rectangle
+				Stroke="{x:Null}"
+				Fill="Transparent"
+				Margin="0,2"
+				Width="2"
+				HorizontalAlignment="Right"
+				x:Name="right" MouseMove="ResizeRectangle_MouseMove" PreviewMouseDown="ResizeRectangle_PreviewMouseDown" />
+            <Rectangle
+				Stroke="{x:Null}"
+				Fill="Transparent"
+				HorizontalAlignment="Left"
+				VerticalAlignment="Bottom"
+				Width="3"
+				Height="3"
+				x:Name="bottomLeft" MouseMove="ResizeRectangle_MouseMove" PreviewMouseDown="ResizeRectangle_PreviewMouseDown" />
+            <Rectangle
+				Stroke="{x:Null}"
+				Fill="Transparent"
+				VerticalAlignment="Bottom"
+				Height="3"
+				Width="3"
+				HorizontalAlignment="Right"
+				x:Name="bottomRight" MouseMove="ResizeRectangle_MouseMove" PreviewMouseDown="ResizeRectangle_PreviewMouseDown" />
+            <Rectangle
+				Stroke="{x:Null}"
+				Fill="Transparent"
+				HorizontalAlignment="Right"
+				Width="3"
+				Height="3"
+				VerticalAlignment="Top"
+				x:Name="topRight" MouseMove="ResizeRectangle_MouseMove" PreviewMouseDown="ResizeRectangle_PreviewMouseDown" />
+            <Rectangle
+				Stroke="{x:Null}"
+				Fill="Transparent"
+				HorizontalAlignment="Left"
+				Width="3"
+				VerticalAlignment="Top"
+				Height="3"
+				x:Name="topLeft" MouseMove="ResizeRectangle_MouseMove" PreviewMouseDown="ResizeRectangle_PreviewMouseDown" />
+        </Grid>
+    </Grid>
+</Window>

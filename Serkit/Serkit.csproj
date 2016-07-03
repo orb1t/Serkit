@@ -1,0 +1,411 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{054A6D6D-9BC1-4004-91A8-DBCDEFDF4AE4}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Serkit</RootNamespace>
+    <AssemblyName>Serkit</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>true</UpdateEnabled>
+    <UpdateMode>Background</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <MinimumRequiredVersion>1.0.0.0</MinimumRequiredVersion>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <PublishWizardCompleted>true</PublishWizardCompleted>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <TargetZone>LocalIntranet</TargetZone>
+  </PropertyGroup>
+  <PropertyGroup>
+    <GenerateManifests>true</GenerateManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Images\logo-256x256.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>Serkit.App</StartupObject>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestCertificateThumbprint>0EAFABB34124B99515731FBE12333F0B612F459F</ManifestCertificateThumbprint>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestKeyFile>Serkit_TemporaryKey.pfx</ManifestKeyFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignManifests>true</SignManifests>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Configuration.Install" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="UIAutomationProvider" />
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="WindowsFormsIntegration" />
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Compile Include="Splash.xaml.cs">
+      <DependentUpon>Splash.xaml</DependentUpon>
+    </Compile>
+    <Page Include="Logic\Circuit\Controls\AndGateControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Logic\Circuit\Controls\Sequence.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Logic\Circuit\Controls\Clock.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Logic\Circuit\Controls\FlipFlops\DFlipFlop.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Logic\Circuit\Controls\FlipFlops\JKFlipFlop.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Logic\Circuit\Controls\FlipFlops\RSFlipFlop.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Logic\Circuit\Controls\FlipFlops\TFlipFlop.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Logic\Circuit\Controls\Gate.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Logic\Circuit\Controls\LED.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Logic\Circuit\Controls\Memory\Memory16x8.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Logic\Circuit\Controls\NandGateControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Logic\Circuit\Controls\NorGateControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Logic\Circuit\Controls\NotGateControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Logic\Circuit\Controls\OrGateControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Logic\Circuit\Controls\PinControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Logic\Circuit\Controls\XnorGateControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Logic\Circuit\Controls\XorGateControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Circuit.cs" />
+    <Compile Include="Logic\Circuit\Controls\Sequence.xaml.cs">
+      <DependentUpon>Sequence.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Logic\Circuit\Controls\Clock.xaml.cs">
+      <DependentUpon>Clock.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Logic\Circuit\Controls\FlipFlops\DFlipFlop.xaml.cs">
+      <DependentUpon>DFlipFlop.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Logic\Circuit\Controls\FlipFlops\JKFlipFlop.xaml.cs">
+      <DependentUpon>JKFlipFlop.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Logic\Circuit\Controls\FlipFlops\RSFlipFlop.xaml.cs">
+      <DependentUpon>RSFlipFlop.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Logic\Circuit\Controls\FlipFlops\TFlipFlop.xaml.cs">
+      <DependentUpon>TFlipFlop.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Logic\Circuit\Controls\Gate.xaml.cs">
+      <DependentUpon>Gate.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Logic\Circuit\Controls\LED.xaml.cs">
+      <DependentUpon>LED.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Logic\Circuit\Controls\Memory\Memory16x8.xaml.cs">
+      <DependentUpon>Memory16x8.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Logic\Circuit\Controls\NandGateControl.xaml.cs">
+      <DependentUpon>NandGateControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Logic\Circuit\Controls\NorGateControl.xaml.cs">
+      <DependentUpon>NorGateControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Logic\Circuit\Controls\NotGateControl.xaml.cs">
+      <DependentUpon>NotGateControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Logic\Circuit\Controls\OrGateControl.xaml.cs">
+      <DependentUpon>OrGateControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Logic\Circuit\Controls\PinControl.xaml.cs">
+      <DependentUpon>PinControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Logic\Circuit\Controls\XnorGateControl.xaml.cs">
+      <DependentUpon>XnorGateControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Logic\Circuit\Controls\XorGateControl.xaml.cs">
+      <DependentUpon>XorGateControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Logic\Circuit\Controls\AndGateControl.xaml.cs">
+      <DependentUpon>AndGateControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Logic\Circuit\Shapes\Arc.cs" />
+    <Compile Include="Logic\LogicState.cs" />
+    <Compile Include="Logic\Circuit\Wire.cs" />
+    <Compile Include="Logic\Word.cs" />
+    <Compile Include="MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Page Include="Splash.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="Properties\app.manifest" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <AppDesigner Include="Properties\" />
+    <None Include="Serkit_TemporaryKey.pfx" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\close.png" />
+    <Resource Include="Images\maximise.png" />
+    <Resource Include="Images\minimise.png" />
+    <Resource Include="Images\restore.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\logo-256x256.png" />
+    <Resource Include="Images\logo-32x32.png" />
+    <Resource Include="Images\logo-64x64.png" />
+    <Resource Include="Images\logo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\new.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\erase.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.5">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.5 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\GateIcons\andGate25_v.png" />
+    <Resource Include="Images\GateIcons\nandGate25_v.png" />
+    <Resource Include="Images\GateIcons\norGate25_v.png" />
+    <Resource Include="Images\GateIcons\notGate25_v.png" />
+    <Resource Include="Images\GateIcons\orGate25_v.png" />
+    <Resource Include="Images\GateIcons\xnorGate25_v.png" />
+    <Resource Include="Images\GateIcons\xorGate25_v.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Cursors\addAnd.cur" />
+    <Resource Include="Images\Cursors\addNand.cur" />
+    <Resource Include="Images\Cursors\addNor.cur" />
+    <Resource Include="Images\Cursors\addNot.cur" />
+    <Resource Include="Images\Cursors\addOr.cur" />
+    <Resource Include="Images\Cursors\addXnor.cur" />
+    <Resource Include="Images\Cursors\addXor.cur" />
+    <Resource Include="Images\Cursors\delete.cur" />
+    <Resource Include="Images\Cursors\pen.cur" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Cursors\pointer.cur" />
+    <Resource Include="Images\Cursors\pointerHand.cur" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Cursors\hand.cur" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\GateIcons\16 x 16.png" />
+    <Resource Include="Images\GateIcons\16 x 8.png" />
+    <Resource Include="Images\GateIcons\256 x 16.png" />
+    <Resource Include="Images\GateIcons\256 x 8.png" />
+    <Resource Include="Images\GateIcons\64K x 1.png" />
+    <Resource Include="Images\GateIcons\64K x 16.png" />
+    <Resource Include="Images\GateIcons\64K x 32.png" />
+    <Resource Include="Images\GateIcons\64K x 4.png" />
+    <Resource Include="Images\GateIcons\64K x 8.png" />
+    <Resource Include="Images\GateIcons\dFF.png" />
+    <Resource Include="Images\GateIcons\jkFF.png" />
+    <Resource Include="Images\GateIcons\rsFF.png" />
+    <Resource Include="Images\GateIcons\tFF.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\GateIcons\4G x 32.png" />
+    <Resource Include="Images\GateIcons\4G x 8B.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Cursors\16x16.cur" />
+    <Resource Include="Images\Cursors\16x8.cur" />
+    <Resource Include="Images\Cursors\256x16.cur" />
+    <Resource Include="Images\Cursors\256x8.cur" />
+    <Resource Include="Images\Cursors\4G x 8Bz.cur" />
+    <Resource Include="Images\Cursors\4Gx32.cur" />
+    <Resource Include="Images\Cursors\64kx1.cur" />
+    <Resource Include="Images\Cursors\64kx16.cur" />
+    <Resource Include="Images\Cursors\64kx32.cur" />
+    <Resource Include="Images\Cursors\64kx4.cur" />
+    <Resource Include="Images\Cursors\64kx8.cur" />
+    <Resource Include="Images\Cursors\dFF.cur" />
+    <Resource Include="Images\Cursors\jkFF.cur" />
+    <Resource Include="Images\Cursors\rsFF.cur" />
+    <Resource Include="Images\Cursors\tFF.cur" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\GateBody\16 x 8.png" />
+    <Resource Include="Images\GateBody\andGate.png" />
+    <Resource Include="Images\GateBody\dFFz.png" />
+    <Resource Include="Images\GateBody\jkFFz.png" />
+    <Resource Include="Images\GateBody\nandGate.png" />
+    <Resource Include="Images\GateBody\norGate.png" />
+    <Resource Include="Images\GateBody\notGate.png" />
+    <Resource Include="Images\GateBody\orGate.png" />
+    <Resource Include="Images\GateBody\rsFFz.png" />
+    <Resource Include="Images\GateBody\tFFz.png" />
+    <Resource Include="Images\GateBody\xnorGate.png" />
+    <Resource Include="Images\GateBody\xorGate.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Grid.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\logo-256x256.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\sdficon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\loading.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

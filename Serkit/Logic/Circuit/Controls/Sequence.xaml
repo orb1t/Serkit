@@ -1,0 +1,22 @@
+﻿<UserControl
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:Gates="clr-namespace:Logic.Circuit.Controls" x:Class="Logic.Circuit.Controls.Sequence" 
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300" Width="70" Height="20" RenderTransformOrigin="0.5,0.5" Tag="SEQ" Focusable="True">
+    <Grid x:Name="g" HorizontalAlignment="Right" Width="165" Margin="-95,0,0,0">
+        <Gates:PinControl x:Name="seqPin" Margin="0,8,31,7" Height="Auto" Width="5" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Right">
+            <Gates:PinControl.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform ScaleX="2" ScaleY="2"/>
+                    <SkewTransform/>
+                    <RotateTransform/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Gates:PinControl.RenderTransform>
+        </Gates:PinControl>
+        <TextBox x:Name="textseq" Margin="0,2,42,2" TextWrapping="Wrap" Text="0" BorderBrush="{x:Null}" FontSize="10" TextChanged="TextBox_TextChanged" Panel.ZIndex="1" FontFamily="Segoe UI Light" HorizontalAlignment="Right" HorizontalContentAlignment="Right"/>
+    </Grid>
+</UserControl>

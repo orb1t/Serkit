@@ -1,0 +1,104 @@
+﻿<UserControl
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:Gates="clr-namespace:Logic.Circuit.Controls" x:Class="Logic.Circuit.Controls.FlipFlops.DFlipFlop" 
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300" Width="100" Height="80" RenderTransformOrigin="0.5,0.5">
+    <UserControl.RenderTransform>
+        <TransformGroup>
+            <ScaleTransform ScaleX="0.7" ScaleY="0.7"/>
+            <SkewTransform/>
+            <RotateTransform/>
+            <TranslateTransform/>
+        </TransformGroup>
+    </UserControl.RenderTransform>
+    <Grid>
+        <Rectangle Fill="#FF464646" Height="1" Margin="2,29,80,48" HorizontalAlignment="Center" VerticalAlignment="Center" Width="18" RenderTransformOrigin="0.5,0.5">
+            <Rectangle.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform ScaleY="2"/>
+                    <SkewTransform/>
+                    <RotateTransform/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Rectangle.RenderTransform>
+        </Rectangle>
+        <Rectangle Fill="#FF464646" Height="1" Margin="2,12,80,65" HorizontalAlignment="Center" VerticalAlignment="Center" Width="18" RenderTransformOrigin="0.5,0.5">
+            <Rectangle.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform ScaleY="2"/>
+                    <SkewTransform/>
+                    <RotateTransform/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Rectangle.RenderTransform>
+        </Rectangle>
+        <Rectangle Fill="#FF464646" Height="1" Margin="80,11,2,66" HorizontalAlignment="Center" VerticalAlignment="Center" Width="18" RenderTransformOrigin="0.5,0.5">
+            <Rectangle.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform ScaleY="2"/>
+                    <SkewTransform/>
+                    <RotateTransform/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Rectangle.RenderTransform>
+        </Rectangle>
+        <Rectangle Fill="#FF464646" Height="1" Margin="80,46,2,31" HorizontalAlignment="Center" VerticalAlignment="Center" Width="18" RenderTransformOrigin="0.5,0.5">
+            <Rectangle.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform ScaleY="2"/>
+                    <SkewTransform/>
+                    <RotateTransform/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Rectangle.RenderTransform>
+        </Rectangle>
+        <Rectangle Fill="#FF464646" Height="1" Margin="28,78,54,-2" HorizontalAlignment="Center" VerticalAlignment="Center" Width="18" RenderTransformOrigin="0.5,0.5">
+            <Rectangle.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform ScaleY="2"/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="-90"/>
+                    <TranslateTransform X="9" Y="-11"/>
+                </TransformGroup>
+            </Rectangle.RenderTransform>
+        </Rectangle>
+        <Rectangle Fill="#FF464646" Height="1" Margin="31,58,51,18" HorizontalAlignment="Center" VerticalAlignment="Center" Width="18" RenderTransformOrigin="0.5,0.5">
+            <Rectangle.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform ScaleY="2"/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="-90"/>
+                    <TranslateTransform X="-11" Y="9"/>
+                </TransformGroup>
+            </Rectangle.RenderTransform>
+        </Rectangle>
+        <Gates:PinControl x:Name="D" HorizontalAlignment="Left" Margin="0,11,0,0" VerticalAlignment="Top" Width="5" Height="5"/>
+        <Gates:PinControl x:Name="Clock" HorizontalAlignment="Left" Margin="0,28,0,0" VerticalAlignment="Top" Height="5" Width="5" StateChanged="Clock_StateChanged"/>
+        <Gates:PinControl x:Name="Q" HorizontalAlignment="Left" Margin="95,10,0,0" VerticalAlignment="Top" Height="5" Width="5" StateChanged="Q_StateChanged"/>
+        <Gates:PinControl x:Name="_Q" HorizontalAlignment="Left" Margin="95,45,0,0" VerticalAlignment="Top" Height="5" Width="5"/>
+        <Gates:PinControl x:Name="IN1" HorizontalAlignment="Left" Margin="29,57,0,0" VerticalAlignment="Top" Width="5" Height="5" RenderTransformOrigin="0.5,0.5">
+            <Gates:PinControl.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="-90"/>
+                    <TranslateTransform X="-2.5" Y="17.5"/>
+                </TransformGroup>
+            </Gates:PinControl.RenderTransform>
+        </Gates:PinControl>
+        <Gates:PinControl x:Name="IN2" HorizontalAlignment="Left" Margin="26,77,0,-2" VerticalAlignment="Top" Height="5" Width="5" RenderTransformOrigin="0.5,0.5">
+            <Gates:PinControl.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="-90"/>
+                    <TranslateTransform X="17.5" Y="-2.5"/>
+                </TransformGroup>
+            </Gates:PinControl.RenderTransform>
+        </Gates:PinControl>
+        <Image Margin="20,0,20,20" Source="/Serkit;component/Images/GateBody/dFFz.png" Stretch="Fill"/>
+    </Grid>
+</UserControl>
